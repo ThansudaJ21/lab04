@@ -1,6 +1,6 @@
 <template>
-  <div v-if="event">
-    <h1>{{ event.title }}</h1>
+  <!-- <div v-if="event"> -->
+    <!-- <h1>{{ event.title }}</h1>
     <div id="nav">
       <router-link :to="{ name: 'EventDetails', params: { id } }"
         >Details</router-link
@@ -11,29 +11,29 @@
       <router-link :to="{ name: 'EventEdit', params: { id } }"
         >Edit</router-link
       >
-    </div>
+    </div> -->
     <p>Edit the event here</p>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
-import EventService from '@/services/EventService.js'
+// import EventService from '@/services/EventService.js'
 
 export default {
-  props: ['id'],
-  data() {
-    return {
-        event: null
-    }
-  },
-  created() {
-     EventService.getEvent(this.id)
-      .then((response) => {
-        this.event = response.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
+  props: ['event'],
+//   data() {
+//     return {
+//         event: null
+//     }
+//   },
+//   created() {
+//      EventService.getEvent(this.id)
+//       .then((response) => {
+//         this.event = response.data
+//       })
+//       .catch((error) => {
+//         console.log(error)
+//       })
+//   }
 }
 </script>
