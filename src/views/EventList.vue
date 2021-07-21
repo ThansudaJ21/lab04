@@ -16,8 +16,11 @@
         rel="next"
         v-if="hasNextPage"
         >Next Page</router-link
-      >
-    </div>
+      ></div>
+
+      <router-link :to="{name: 'EventList', query: { perPage: perPage + 1 }}">Increase</router-link>
+      <router-link :to="{name: 'EventList', query: { perPage: perPage - 1 }}">Decrease</router-link>
+    
   </div>
 </template>
 
@@ -25,13 +28,17 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
-
 import { watchEffect } from '@vue/runtime-core'
 // import axios from 'axios'
+
 export default {
   name: 'EventList',
   props: {
     page: {
+      type: Number,
+      required: true
+    },
+    perPage: {
       type: Number,
       required: true
     }
@@ -42,12 +49,12 @@ export default {
   data() {
     return {
       events: null,
-      totalEvents: 0 // <--- Added thiss to store totalEvents
+      totalEvents: 0, // <--- Added thiss to store totalEvents
     }
   },
   created() {
     watchEffect(() => {
-      EventService.getEvents(2, this.page)
+      EventService.getEvents(this.perPage, this.page)
         .then((response) => {
           this.events = response.data
           this.totalEvents = response.headers['x-total-count'] //<===store it
@@ -60,7 +67,7 @@ export default {
   computed: {
     hasNextPage() {
       //First, calculate total pages
-      let totalPages = Math.ceil(this.totalEvents / 2) //2 is event per pages
+      let totalPages = Math.ceil(this.totalEvents / this.perPage) //this.size is event per pages
       //Then check to see if the current page is less than the tatal pages
       return this.page < totalPages
     }
